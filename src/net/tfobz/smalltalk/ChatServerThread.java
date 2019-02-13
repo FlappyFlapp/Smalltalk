@@ -11,31 +11,38 @@ public class ChatServerThread extends Thread
 	private Socket client = null;
 	private BufferedReader in = null;
 	private PrintStream out = null;
+	private String name=null;
 	public ChatServerThread(Socket client) throws IOException {
 		in = new BufferedReader(
-			new InputStreamReader(client.getInputStream()));
+				new InputStreamReader(client.getInputStream()));
 		out = new PrintStream(client.getOutputStream());
 	}
-	
-	
+
+
 	public void run() {
 		try {
-			ChatServer.outputStreams.add(out);
-			String name = in.readLine();
-			System.out.println(name + " signed in");
-			for (PrintStream outs: ChatServer.outputStreams)
-				outs.println(name + " signed in");
+			synchronized (ChatServer.outputStreams) {
+				ChatServer.outputStreams.add(out);
+				String name = in.readLine();
+				System.out.println(name + " signed in");
+				for (PrintStream outs: ChatServer.outputStreams)
+					outs.println(name + " signed in");
+			}
 			while (true) {
 				String line = in.readLine();
 				if (line == null)
 					break;
-				for (PrintStream outs: ChatServer.outputStreams)
-					outs.println(name + ": " + line);
+				synchronized (ChatServer.outputStreams) {
+					for (PrintStream outs: ChatServer.outputStreams)
+						outs.println(name + ": " + line);
+				}
 			}
-			ChatServer.outputStreams.remove(out);
-			System.out.println(name + " signed out");
-			for (PrintStream outs: ChatServer.outputStreams)
-				outs.println(name + " signed out");
+			synchronized (ChatServer.outputStreams) {
+				ChatServer.outputStreams.remove(out);
+				System.out.println(name + " signed out");
+				for (PrintStream outs: ChatServer.outputStreams)
+					outs.println(name + " signed out");
+			}
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 			if (out != null)
