@@ -2,6 +2,7 @@ package net.tfobz.smalltalk;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 
@@ -11,8 +12,9 @@ public class ChatServerThread extends Thread
 	private BufferedReader in = null;
 	private PrintStream out = null;
 	public ChatServerThread(Socket client) throws IOException {
-	//	(Initialisierung von BufferedReader und PrintStream siehe hinten)
-	//	…
+		BufferedReader in = new BufferedReader(
+			new InputStreamReader(client.getInputStream()));
+		PrintStream out = new PrintStream(client.getOutputStream());
 	}
 	@Override
 	public void run() {
