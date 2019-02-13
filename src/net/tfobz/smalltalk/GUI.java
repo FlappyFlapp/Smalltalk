@@ -31,7 +31,7 @@ public class GUI extends DFrame {
 		button = new DButton();
 		button.setBounds(1555, 820, 40, 40);
 		button.setBackground(Color.CYAN);
-		
+
 		try {
 			Image img = ImageIO.read(getClass().getResource("senden.png"));
 			button.setIcon(new ImageIcon(img));
