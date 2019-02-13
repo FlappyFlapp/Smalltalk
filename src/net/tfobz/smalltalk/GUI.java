@@ -1,6 +1,11 @@
 package net.tfobz.smalltalk;
 
 import java.awt.geom.Line2D;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.Socket;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -16,6 +21,8 @@ import dframe.DFrameConstants;
 import dframe.DTextField;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GUI extends DFrame {
 
@@ -23,6 +30,9 @@ public class GUI extends DFrame {
 	private DButton button;
 	private JTextPane area;
 	private Style style;
+	private BufferedReader in;
+	private PrintStream out;
+	private Socket client = null;
 
 	public GUI() {
 		setSize(1600, 900);
@@ -71,6 +81,42 @@ public class GUI extends DFrame {
 		// } catch (BadLocationException e) {
 		// }
 
+		try {
+			client = new Socket("localhost", 65535);
+			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			out = new PrintStream(client.getOutputStream());
+			out.println("Flapp");
+			new ChatClientThread(in, area).start();
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		button.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (text.getText() != null && text.getText() != "") {
+					out.println(text.getText());
+					text.setText("");
+				}
+			}
+		});
+	}
+
+	public JTextPane getArea() {
+		return area;
+	}
+
+	public void setArea(JTextPane area) {
+		this.area = area;
+	}
+
+	public DTextField getText() {
+		return text;
+	}
+
+	public void setText(DTextField text) {
+		this.text = text;
 	}
 
 	public void paint(Graphics g) {
@@ -84,6 +130,8 @@ public class GUI extends DFrame {
 	public static void main(String[] args) {
 		GUI gui = new GUI();
 		gui.setVisible(true);
+
+
 	}
 
 }

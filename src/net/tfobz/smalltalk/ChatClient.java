@@ -6,21 +6,23 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 
-public class ChatClient
-{
+import javax.swing.JTextPane;
+
+public class ChatClient {
 	public static final int PORT = 65535;
+
 	public static void main(String[] args) {
+		GUI gui = new GUI();
+		gui.setVisible(true);
 		Socket client = null;
 		try {
 			client = new Socket(args[1], PORT);
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(client.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			PrintStream out = new PrintStream(client.getOutputStream());
-			BufferedReader consoleIn =
-					new BufferedReader(new InputStreamReader(System.in));
+			BufferedReader consoleIn = new BufferedReader(new InputStreamReader(System.in));
 			out.println(args[0]);
-			new ChatClientThread(in).start();
-			
+			new ChatClientThread(in, gui.getArea()).start();
+
 			while (true) {
 				String line = consoleIn.readLine();
 				if (line == null)
@@ -30,7 +32,11 @@ public class ChatClient
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		} finally {
-			try { client.close(); } catch (Exception e1) { ; }
+			try {
+				client.close();
+			} catch (Exception e1) {
+				;
+			}
 		}
 	}
 }

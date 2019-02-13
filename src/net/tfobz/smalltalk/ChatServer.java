@@ -24,7 +24,7 @@ public class ChatServer
 				}
 			}
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} finally {
 			try { server.close(); } catch (Exception e1) { ; }
 		}
