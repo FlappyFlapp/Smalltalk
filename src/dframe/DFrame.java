@@ -89,19 +89,19 @@ public class DFrame extends JFrame {
 		Image min_icon = null;
 
 		try {
-			min_icon = ImageIO.read(getClass().getResource("..\\dframe\\min.png"));
+			min_icon = ImageIO.read(getClass().getResource("min.png"));
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
 
 		try {
-			full_icon = ImageIO.read(getClass().getResource("..\\dframe\\full.png"));
+			full_icon = ImageIO.read(getClass().getResource("full.png"));
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
 
 		try {
-			exit_icon = ImageIO.read(getClass().getResource("..\\dframe\\exit.png"));
+			exit_icon = ImageIO.read(getClass().getResource("exit.png"));
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
