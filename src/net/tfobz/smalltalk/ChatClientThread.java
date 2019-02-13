@@ -9,6 +9,7 @@ public class ChatClientThread extends Thread
 	private BufferedReader in = null;
 	public ChatClientThread(BufferedReader in) {
 		this.in = in;
+		
 	}
 	@Override
 	public void run() {

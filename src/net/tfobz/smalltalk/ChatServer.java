@@ -9,8 +9,7 @@ import java.util.ArrayList;
 public class ChatServer
 {
 	public static final int PORT = 65535;
-	protected static ArrayList<PrintStream> outputStreams =
-			new ArrayList();
+	protected static ArrayList<PrintStream> outputStreams = new ArrayList<PrintStream>();
 	public static void main(String[] args) {
 		ServerSocket server = null;
 		try {

@@ -18,13 +18,12 @@ public class ChatClient
 			PrintStream out = new PrintStream(client.getOutputStream());
 			BufferedReader consoleIn =
 					new BufferedReader(new InputStreamReader(System.in));
-			// sending the name of the client to the server
 			out.println(args[0]);
 			new ChatClientThread(in).start();
+			
 			while (true) {
 				String line = consoleIn.readLine();
 				if (line == null)
-					// pressed [Ctrl]+Z to sign out
 					break;
 				out.println(line);
 			}
