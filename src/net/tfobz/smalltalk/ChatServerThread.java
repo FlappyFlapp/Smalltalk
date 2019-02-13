@@ -11,8 +11,8 @@ public class ChatServerThread extends Thread
 	private BufferedReader in = null;
 	private PrintStream out = null;
 	public ChatServerThread(Socket client) throws IOException {
-		(Initialisierung von BufferedReader und PrintStream siehe hinten)
-		…
+	//	(Initialisierung von BufferedReader und PrintStream siehe hinten)
+	//	…
 	}
 	@Override
 	public void run() {
