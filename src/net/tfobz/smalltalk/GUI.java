@@ -29,12 +29,13 @@ public class GUI extends DFrame {
 		add(text);
 
 		button = new DButton();
-		button.setBounds(1555, 820, 40, 40);
-		button.setBackground(Color.CYAN);
-		
+		button.setBounds(1555, 825, 30, 30);
+		button.setBackground(new Color(60, 60, 60));
+
 		try {
 			Image img = ImageIO.read(getClass().getResource("senden.png"));
-			button.setIcon(new ImageIcon(img));
+			Image newimg = img.getScaledInstance(button.getWidth(), button.getHeight(), java.awt.Image.SCALE_SMOOTH);
+			button.setIcon(new ImageIcon(newimg));
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
