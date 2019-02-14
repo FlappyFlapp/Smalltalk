@@ -23,6 +23,9 @@ import dframe.DTextField;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class GUI extends DFrame {
 
@@ -39,7 +42,7 @@ public class GUI extends DFrame {
 		centerFrame();
 		setToolbar(DFrameConstants.SHOW_MINIMIZE);
 		this.getContentPane().setBackground(new Color(60, 60, 60));
-
+		
 		text = new DTextField();
 		text.setBounds(50, 820, 1500, 40);
 		text.setBackground(new Color(60, 60, 60));
@@ -48,7 +51,16 @@ public class GUI extends DFrame {
 		button = new DButton();
 		button.setBounds(1555, 825, 30, 30);
 		button.setBackground(new Color(60, 60, 60));
+		
+		this.addKeyListener(new KeyAdapter() {
 
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		try {
 			Image img = ImageIO.read(getClass().getResource("senden.png"));
 			Image newimg = img.getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
