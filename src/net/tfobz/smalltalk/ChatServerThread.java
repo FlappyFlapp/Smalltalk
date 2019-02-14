@@ -13,6 +13,7 @@ public class ChatServerThread extends Thread {
 	private String name = null;
 
 	public ChatServerThread(Socket client) throws IOException {
+		// In-Stream
 		in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 		out = new PrintStream(client.getOutputStream());
 	}
