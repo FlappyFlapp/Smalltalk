@@ -15,6 +15,7 @@ public class ChatClient {
 		GUI gui = new GUI();
 		gui.setVisible(true);
 		Socket client = null;
+		
 		try {
 			client = new Socket(args[1], PORT);
 			BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
