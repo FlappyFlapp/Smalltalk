@@ -47,7 +47,6 @@ public class GUI extends DFrame {
 	private DTextField text;
 	private DButton button;
 	private JTextPane area;
-	private Style style;
 	private BufferedReader in;
 	private PrintStream out;
 	private Socket client = null;
@@ -59,6 +58,7 @@ public class GUI extends DFrame {
 	private DButton start;
 	private DLabel start_lbl;
 	private JLabel bild;
+	private DButton vote_btn;
 
 	public GUI() {
 		setSize(1600, 900);
@@ -88,8 +88,34 @@ public class GUI extends DFrame {
 			button.setIcon(new ImageIcon(newimg));
 		} catch (Exception ex) {
 		}
-		
+
 		all_pnl.add(button);
+
+		vote_btn = new DButton();
+		vote_btn.setBounds(10, 825, 30, 30);
+		vote_btn.setBackground(new Color(60, 60, 60));
+		vote_btn.setContentAreaFilled(false);
+
+		try {
+			Image img = ImageIO.read(getClass().getResource("vote.png"));
+			Image newimg = img.getScaledInstance(vote_btn.getWidth(), vote_btn.getHeight(), Image.SCALE_SMOOTH);
+			vote_btn.setIcon(new ImageIcon(newimg));
+		} catch (Exception ex) {
+		}
+
+		all_pnl.add(vote_btn);
+
+		vote_btn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				VoteDialog v = new VoteDialog(GUI.this);
+				v.setLocation((int) GUI.this.getLocation().getX() + 10, (int) GUI.this.getLocation().getY() + 365);
+				v.setModal(true);
+				v.setVisible(true);
+			}
+		});
+
 		area = new JTextPane();
 		area.setEditable(false);
 		area.setBackground(new Color(60, 60, 60));
@@ -202,6 +228,8 @@ public class GUI extends DFrame {
 					}
 					login_pnl.setVisible(false);
 					all_pnl.setVisible(true);
+
+					GUI.this.repaint();
 				}
 			}
 		});
@@ -234,7 +262,6 @@ public class GUI extends DFrame {
 	public static void main(String[] args) {
 		GUI gui = new GUI();
 		gui.setVisible(true);
-
 	}
 
 }

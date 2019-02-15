@@ -16,19 +16,16 @@ public class ChatServer
 			server = new ServerSocket(PORT);
 			System.out.println("Chat server started");
 			new Thread(new Runnable() {
-
-				
-				public void run() {// TODO Auto-generated method stub
+				public void run() {
 					try {
-						Thread.sleep(500);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					}
-					new JokeBot();
+					JokeBot bot = new JokeBot();
+					bot.start();
 				}
 				
-			});
+			}).start();
 			while (true) {
 				Socket client = server.accept();
 				try {

@@ -1,4 +1,5 @@
 package dframe;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -14,6 +15,9 @@ import javax.swing.text.Caret;
 import javax.swing.text.JTextComponent;
 
 public class DTextField extends JTextField {
+
+	private FocusListener f;
+
 	public DTextField() {
 		super();
 		initialize();
@@ -30,8 +34,7 @@ public class DTextField extends JTextField {
 		setBackground(new Color(75, 75, 75));
 		setCaretColor(Color.WHITE);
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
-		addFocusListener(new FocusListener() {
-
+		f = new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
 				setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
@@ -41,7 +44,11 @@ public class DTextField extends JTextField {
 			public void focusGained(FocusEvent e) {
 				setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, ColorPalette.BLAU));
 			}
-		});
-		;
+		};
+		addFocusListener(f);
+	}
+
+	public FocusListener getFocusListener() {
+		return f;
 	}
 }

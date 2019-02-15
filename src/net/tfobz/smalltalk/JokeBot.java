@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
@@ -19,51 +21,41 @@ import ChatConsole.ChatClientThread;
 public class JokeBot extends Thread {
 
 	private BufferedReader in = null;
-	private JTextPane pane;
-	private String name="JokeBot";
-	public static final int PORT = 65535;
-	String l=null;
 	private PrintStream out;
+	private String name = "JokeBot";
+	public static final int PORT = 65535;
+	private ArrayList<String> list = new ArrayList<String>();
+	private Random r = new Random();
 
 	public JokeBot() {
 		Socket client = null;
+		list.add("A common programming solution is to use threads. But then, two ‘llyou hav erpoblesm.");
+		list.add("I’ve got a really good UDP joke to tell you, but I don’t know if you’ll get it.");
+		list.add("There are 10 kinds of people in this world: Those who understand binary, those who don’t.");
+		list.add("In order to understand recursion you must first understand recursion.");
+		list.add("Why do Java programmers wear glasses? Because they don’t C#!");
 		try {
 			client = new Socket("localhost", PORT);
-			in = new BufferedReader(
-					new InputStreamReader(client.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			out = new PrintStream(client.getOutputStream());
-			// sending the name of the client to the server
 			out.println(name);
-			this.start();
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
-		} finally {
-			try { client.close(); } catch (Exception e1) { ; }
 		}
 	}
-	
+
 	@Override
 	public void run() {
 		try {
 			while (true) {
 				String line = in.readLine();
-				if (line.startsWith("-")) {
-					switch (line) {
-						case "-joke": {
-							line=tellJoke();
-							break;
-						}
-						default: {
-							line="Kein Befehl";
-							break;
-						}
-					}
+				if (line.contains("-joke")) {
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
-							out.println(l);
+							out.println(tellJoke());
 						}
-					});
+					}).start();
 				}
 			}
 		} catch (SocketException e) {
@@ -71,11 +63,10 @@ public class JokeBot extends Thread {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-		
-		
+
 	}
 
 	public String tellJoke() {
-		return "Das ist ein Witz";
+		return list.get(r.nextInt(list.size()));
 	}
 }
