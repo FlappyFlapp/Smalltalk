@@ -52,7 +52,7 @@ public class GUI extends DFrame {
 	private PrintStream out;
 	private Socket client = null;
 	private JScrollPane jsc;
-	private String name = "Fabi";
+	private String name = "Unknown";
 	private JPanel login_pnl;
 	private JPanel all_pnl;
 	private DTextField name_txt;
@@ -141,15 +141,7 @@ public class GUI extends DFrame {
 		jsc.setBorder(null);
 		all_pnl.add(jsc);
 
-		try {
-			client = new Socket("localhost", 65535);
-			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-			out = new PrintStream(client.getOutputStream());
-			out.println(name);
-			new ChatClientThread(in, area).start();
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
+	
 
 		this.getRootPane().setDefaultButton(button);
 
@@ -204,8 +196,19 @@ public class GUI extends DFrame {
 		start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				login_pnl.setVisible(false);
-				all_pnl.setVisible(true);
+				if (name_txt != null && name_txt.getText().length() > 0) {
+					name = name_txt.getText();
+					try {
+						client = new Socket("localhost", 65535);
+						in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+						out = new PrintStream(client.getOutputStream());
+						out.println(name);
+						new ChatClientThread(in, area).start();
+					} catch (IOException ex) {
+					}
+					login_pnl.setVisible(false);
+					all_pnl.setVisible(true);
+				}
 			}
 		});
 	}
