@@ -1,4 +1,4 @@
-package net.tfobz.smalltalk;
+package ChatConsole;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -28,5 +28,6 @@ public class ChatServer
 		} finally {
 			try { server.close(); } catch (Exception e1) { ; }
 		}
+		System.out.println(outputStreams.size());
 	}
 }
