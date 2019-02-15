@@ -43,7 +43,7 @@ public class ChatClientThread extends Thread
 //					pane.setParagraphAttributes(attribs, true);
 
 					int textlaenge = 200;
-					if (!line.contains("signed in")) {
+					if (!line.contains("signed in") && !line.contains("signed out") && !line.startsWith("-")) {
 						StyleConstants.setForeground(style, dframe.ColorPalette.BLAU);
 						doc.insertString(doc.getLength(), "  " + line.substring(0, index + 1) + "\n", style);
 						line = line.substring(index + 2);
@@ -63,10 +63,12 @@ public class ChatClientThread extends Thread
 							doc.insertString(doc.getLength(), "      " + line + "\n", style);
 						}
 
-					} else {
+					} else if(line.contains("signed out")) {
+						StyleConstants.setForeground(style, dframe.ColorPalette.ROT);
+						doc.insertString(doc.getLength(), line + "\n", style);
+					} else if(line.contains("signed in")) {
 						StyleConstants.setForeground(style, dframe.ColorPalette.GRUEN);
 						doc.insertString(doc.getLength(), line + "\n", style);
-					
 					}
 					pane.setSelectionEnd(pane.getStyledDocument().getLength());
 				} catch (BadLocationException e) {

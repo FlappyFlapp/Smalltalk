@@ -22,7 +22,6 @@ public class ChatClient {
 			BufferedReader consoleIn = new BufferedReader(new InputStreamReader(System.in));
 			out.println(name);
 			new ChatClientThread(in, gui.getArea()).start();
-
 			while (true) {
 				String line = consoleIn.readLine();
 				if (line == null)

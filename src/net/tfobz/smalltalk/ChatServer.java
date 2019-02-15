@@ -15,6 +15,20 @@ public class ChatServer
 		try {
 			server = new ServerSocket(PORT);
 			System.out.println("Chat server started");
+			new Thread(new Runnable() {
+
+				
+				public void run() {// TODO Auto-generated method stub
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					new JokeBot();
+				}
+				
+			});
 			while (true) {
 				Socket client = server.accept();
 				try {

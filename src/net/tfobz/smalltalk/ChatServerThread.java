@@ -38,7 +38,6 @@ public class ChatServerThread extends Thread
 						outs.println(name + ": " + line);
 				}
 			}
-			System.out.println("yaaaaa");
 			synchronized (ChatServer.outputStreams) {
 				ChatServer.outputStreams.remove(out);
 				System.out.println(name + " signed out");
