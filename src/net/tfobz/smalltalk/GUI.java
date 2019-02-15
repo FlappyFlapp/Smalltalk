@@ -88,6 +88,7 @@ public class GUI extends DFrame {
 			button.setIcon(new ImageIcon(newimg));
 		} catch (Exception ex) {
 		}
+		
 		all_pnl.add(button);
 		area = new JTextPane();
 		area.setEditable(false);
@@ -132,16 +133,9 @@ public class GUI extends DFrame {
 			}
 		});
 		jsc.getVerticalScrollBar().setUI(new MyScrollBarUI());
-
-		StyledDocument doc = area.getStyledDocument();
-
-		style = area.addStyle("I'm a Style", null);
-		StyleConstants.setForeground(style, Color.WHITE);
 		jsc.setBounds(0, 0, getWidth(), 810);
 		jsc.setBorder(null);
 		all_pnl.add(jsc);
-
-	
 
 		this.getRootPane().setDefaultButton(button);
 
