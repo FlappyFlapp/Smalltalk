@@ -11,11 +11,15 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.ScrollPaneLayout;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -29,6 +33,7 @@ import com.sun.javafx.scene.control.skin.ColorPalette;
 import dframe.DButton;
 import dframe.DFrame;
 import dframe.DFrameConstants;
+import dframe.DLabel;
 import dframe.DTextField;
 
 import java.awt.*;
@@ -38,8 +43,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class GUI extends DFrame
-{
+public class GUI extends DFrame {
 	private DTextField text;
 	private DButton button;
 	private JTextPane area;
@@ -49,6 +53,12 @@ public class GUI extends DFrame
 	private Socket client = null;
 	private JScrollPane jsc;
 	private String name = "Fabi";
+	private JPanel login_pnl;
+	private JPanel all_pnl;
+	private DTextField name_txt;
+	private DButton start;
+	private DLabel start_lbl;
+	private JLabel bild;
 
 	public GUI() {
 		setSize(1600, 900);
@@ -56,10 +66,16 @@ public class GUI extends DFrame
 		setToolbar(DFrameConstants.SHOW_MINIMIZE);
 		this.getContentPane().setBackground(new Color(60, 60, 60));
 
+		all_pnl = new JPanel();
+		all_pnl.setBounds(0, 0, getWidth(), getHeight());
+		all_pnl.setBackground(new Color(60, 60, 60));
+		all_pnl.setLayout(null);
+		add(all_pnl);
+
 		text = new DTextField();
 		text.setBounds(50, 820, 1500, 40);
 		text.setBackground(new Color(60, 60, 60));
-		add(text);
+		all_pnl.add(text);
 
 		button = new DButton();
 		button.setBounds(1555, 825, 30, 30);
@@ -71,9 +87,8 @@ public class GUI extends DFrame
 			Image newimg = img.getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
 			button.setIcon(new ImageIcon(newimg));
 		} catch (Exception ex) {
-			System.out.println(ex);
 		}
-		add(button);
+		all_pnl.add(button);
 		area = new JTextPane();
 		area.setEditable(false);
 		area.setBackground(new Color(60, 60, 60));
@@ -124,17 +139,7 @@ public class GUI extends DFrame
 		StyleConstants.setForeground(style, Color.WHITE);
 		jsc.setBounds(0, 0, getWidth(), 810);
 		jsc.setBorder(null);
-		add(jsc);
-
-		// Zin einikritzeln
-		// try {
-		// StyleConstants.setForeground(style, Color.WHITE);
-		// doc.insertString(0, "Scheduler is now running (schedule period = 10)\n",
-		// style);
-		// StyleConstants.setForeground(style, dframe.ColorPalette.BLAU);
-		// doc.insertString(0, "Message: ", style);
-		// } catch (BadLocationException e) {
-		// }
+		all_pnl.add(jsc);
 
 		try {
 			client = new Socket("localhost", 65535);
@@ -155,6 +160,52 @@ public class GUI extends DFrame
 					out.println(t);
 					text.setText(null);
 				}
+			}
+		});
+
+		all_pnl.setVisible(false);
+
+		login_pnl = new JPanel();
+		login_pnl.setBounds(0, 0, getWidth(), getHeight());
+		login_pnl.setBackground(new Color(60, 60, 60));
+		login_pnl.setLayout(null);
+		add(login_pnl);
+
+		start_lbl = new DLabel("What's your name, buddy?");
+		start_lbl.setBounds(500, 150, 600, 50);
+		start_lbl.setHorizontalAlignment(SwingUtilities.HORIZONTAL);
+		start_lbl.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 35));
+		login_pnl.add(start_lbl);
+
+		bild = new JLabel();
+		bild.setSize(300, 300);
+		bild.setLocation(getWidth() / 2 - bild.getWidth() / 2, 250);
+		try {
+			Image img = ImageIO.read(getClass().getResource("Avatar.png"));
+			Image newimg = img.getScaledInstance(bild.getWidth(), bild.getHeight(), Image.SCALE_SMOOTH);
+			bild.setIcon(new ImageIcon(newimg));
+		} catch (Exception ex) {
+		}
+
+		login_pnl.add(bild);
+		name_txt = new DTextField();
+		name_txt.setBounds(600, 600, 400, 60);
+		name_txt.setBackground(new Color(60, 60, 60));
+		name_txt.setHorizontalAlignment(SwingConstants.HORIZONTAL);
+		name_txt.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 30));
+		login_pnl.add(name_txt);
+
+		start = new DButton("Smalltalk now.");
+		start.setBounds(700, 700, 200, 50);
+		start.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 20));
+		start.setContentAreaFilled(false);
+		login_pnl.add(start);
+
+		start.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				login_pnl.setVisible(false);
+				all_pnl.setVisible(true);
 			}
 		});
 	}
@@ -191,8 +242,7 @@ public class GUI extends DFrame
 
 }
 
-class MyScrollBarUI extends BasicScrollBarUI
-{
+class MyScrollBarUI extends BasicScrollBarUI {
 	private final Dimension d = new Dimension();
 
 	@Override
@@ -228,15 +278,15 @@ class MyScrollBarUI extends BasicScrollBarUI
 		if (!sb.isEnabled() || r.width > r.height) {
 			return;
 		} else if (isDragging) {
-			color =  new Color(40, 40, 40);
+			color = new Color(40, 40, 40);
 		} else if (isThumbRollover()) {
-			color =  new Color(42, 42, 42);
+			color = new Color(42, 42, 42);
 		} else {
 			color = new Color(45, 45, 45);
 		}
 		g2.setPaint(color);
 		g2.fillRoundRect(r.x, r.y, r.width, r.height, 10, 10);
-		
+
 		g2.drawRoundRect(r.x, r.y, r.width, r.height, 10, 10);
 		g2.dispose();
 	}
