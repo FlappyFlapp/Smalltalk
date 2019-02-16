@@ -21,7 +21,7 @@ public class ChatClient {
 			PrintStream out = new PrintStream(client.getOutputStream());
 			BufferedReader consoleIn = new BufferedReader(new InputStreamReader(System.in));
 			out.println(name);
-			new ChatClientThread(in, gui.getArea()).start();
+			new ChatClientThread(in, gui, gui.getArea()).start();
 			while (true) {
 				String line = consoleIn.readLine();
 				if (line == null)
@@ -49,7 +49,7 @@ public class ChatClient {
 			PrintStream out = new PrintStream(client.getOutputStream());
 			BufferedReader consoleIn = new BufferedReader(new InputStreamReader(System.in));
 			out.println(args[0]);
-			new ChatClientThread(in, gui.getArea()).start();
+			new ChatClientThread(in, gui, gui.getArea()).start();
 
 			while (true) {
 				String line = consoleIn.readLine();

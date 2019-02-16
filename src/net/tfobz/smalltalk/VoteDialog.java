@@ -22,8 +22,6 @@ import dframe.DTextField;
 
 public class VoteDialog extends JDialog {
 
-	
-	private BufferedReader in = null;
 	public static final int PORT = 65535;
 	private PrintStream out;
 	private DButton button;
@@ -31,8 +29,9 @@ public class VoteDialog extends JDialog {
 	private DTextField title;
 	private DTextField[] votes = new DTextField[4];
 
-	public VoteDialog(JFrame owner) {
+	public VoteDialog(JFrame owner, PrintStream out) {
 		super(owner);
+		this.out = out;
 		initialize();
 	}
 
@@ -41,16 +40,6 @@ public class VoteDialog extends JDialog {
 	}
 
 	private void initialize() {
-		Socket client = null;
-		try {
-			client = new Socket("localhost", PORT);
-			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-			out = new PrintStream(client.getOutputStream());
-			out.println("#+/(!)!(?)()=?!?");
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-		
 		setLayout(null);
 		setUndecorated(true);
 		getContentPane().setBackground(new Color(65, 65, 65));
@@ -134,7 +123,7 @@ public class VoteDialog extends JDialog {
 	}
 
 	public String getVotingString() {
-		return "!§$%&/()=" + title.getText()+ "///" + votes[0].getText()+"///" + votes[1].getText()+"///" + votes[2].getText()+"///"
-				+ votes[3].getText() +"///";
+		return "!§$%&/()=" + title.getText() + "///" + votes[0].getText() + "///" + votes[1].getText() + "///"
+				+ votes[2].getText() + "///" + votes[3].getText() + "///";
 	}
 }

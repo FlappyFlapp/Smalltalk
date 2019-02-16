@@ -13,14 +13,16 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-public class ChatClientThread extends Thread
-{
+public class ChatClientThread extends Thread {
 	private BufferedReader in = null;
 	private JTextPane pane;
 	private Style style;
-	public ChatClientThread(BufferedReader in, JTextPane pane) {
+	private GUI gui;
+
+	public ChatClientThread(BufferedReader in, GUI gui, JTextPane pane) {
 		this.in = in;
 		this.pane = pane;
+		this.gui = gui;
 	}
 
 	@Override
@@ -38,12 +40,10 @@ public class ChatClientThread extends Thread
 							break;
 						}
 					}
-					//					SimpleAttributeSet attribs = new SimpleAttributeSet();
-					//					StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_RIGHT);
-					//					pane.setParagraphAttributes(attribs, true);
 
 					int textlaenge = 200;
-					if (!line.contains("signed in") && !line.contains("signed out") && !line.startsWith("-") && !line.contains("#+/(!)!(?)()=?!?") &&!line.contains("!§$%&/()=")) { 
+					if (!line.contains("signed in") && !line.contains("signed out") && !line.startsWith("-")
+							&& !line.contains("#+/(!)!(?)()=?!?") && !line.contains("!§$%&/()=")) {
 						StyleConstants.setForeground(style, dframe.ColorPalette.BLAU);
 						doc.insertString(doc.getLength(), "  " + line.substring(0, index + 1) + "\n", style);
 						line = line.substring(index + 2);
@@ -51,7 +51,8 @@ public class ChatClientThread extends Thread
 							for (int i = 0; i < line.length(); i = i + textlaenge) {
 								if (i + textlaenge < line.length()) {
 									StyleConstants.setForeground(style, Color.WHITE);
-									doc.insertString(doc.getLength(), "      " + line.substring(i, i + textlaenge) + "\n", style);
+									doc.insertString(doc.getLength(),
+											"      " + line.substring(i, i + textlaenge) + "\n", style);
 								} else {
 									StyleConstants.setForeground(style, Color.WHITE);
 									doc.insertString(doc.getLength(), "      " + line.substring(i) + "\n", style);
@@ -62,17 +63,19 @@ public class ChatClientThread extends Thread
 							StyleConstants.setForeground(style, Color.WHITE);
 							doc.insertString(doc.getLength(), "      " + line + "\n", style);
 						}
-						
+
 					} else if (line.contains("!§$%&/()=")) {
-						
-					} else if (line.contains("#+/(!)!(?)()=?!?")) {
-						
-					} else if(line.contains("signed out")) {
+						VoteDialogListener vdl = new VoteDialogListener(gui);
+						vdl.setLocation((int) gui.getLocation().getX() + 10, (int) gui.getLocation().getY() + 365);
+						vdl.setModal(true);
+						vdl.setVotingTable(line);
+						vdl.setVisible(true);
+					}  else if (line.contains("signed out")) {
 						StyleConstants.setForeground(style, dframe.ColorPalette.ROT);
 						doc.insertString(doc.getLength(), line + "\n", style);
-					} else if(line.contains("signed in")) {
+					} else if (line.contains("signed in")) {
 						StyleConstants.setForeground(style, dframe.ColorPalette.GRUEN);
-						doc.insertString(doc.getLength(), line + "\n", style);	
+						doc.insertString(doc.getLength(), line + "\n", style);
 					}
 					pane.setSelectionEnd(pane.getStyledDocument().getLength());
 				} catch (BadLocationException e) {

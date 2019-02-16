@@ -21,14 +21,7 @@ import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicScrollBarUI;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
-
-import com.sun.javafx.scene.control.skin.ColorPalette;
 
 import dframe.DButton;
 import dframe.DFrame;
@@ -39,9 +32,6 @@ import dframe.DTextField;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class GUI extends DFrame {
 	private DTextField text;
@@ -109,15 +99,12 @@ public class GUI extends DFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				VoteDialog v = new VoteDialog(GUI.this);
+				VoteDialog v = new VoteDialog(GUI.this, GUI.this.out);
 				v.setLocation((int) GUI.this.getLocation().getX() + 10, (int) GUI.this.getLocation().getY() + 365);
 				v.setModal(true);
 				v.setVisible(true);
 			}
 		});
-		
-		
-		VoteDialogListener vdl= new VoteDialogListener(GUI.this);
 
 		area = new JTextPane();
 		area.setEditable(false);
@@ -216,9 +203,6 @@ public class GUI extends DFrame {
 		start.setContentAreaFilled(false);
 		login_pnl.add(start);
 
-		
-		
-		
 		start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -229,7 +213,7 @@ public class GUI extends DFrame {
 						in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 						out = new PrintStream(client.getOutputStream());
 						out.println(name);
-						new ChatClientThread(in, area).start();
+						new ChatClientThread(in, GUI.this, area).start();
 					} catch (IOException ex) {
 					}
 					login_pnl.setVisible(false);
