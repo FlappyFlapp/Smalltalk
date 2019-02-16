@@ -118,8 +118,6 @@ public class GUI extends DFrame {
 		
 		
 		VoteDialogListener vdl= new VoteDialogListener(GUI.this);
-		vdl.setLocation((int) GUI.this.getLocation().getX() + 10, (int) GUI.this.getLocation().getY() + 365);
-		vdl.setModal(true);
 
 		area = new JTextPane();
 		area.setEditable(false);

@@ -110,6 +110,8 @@ public class VoteDialogListener extends JDialog {
 								});
 								add(votes[i]);
 							}
+							setLocation((int) owner.getLocation().getX() + 10, (int) owner.getLocation().getY() + 365);
+							setModal(true);
 							setVisible(true);
 						}
 					}
