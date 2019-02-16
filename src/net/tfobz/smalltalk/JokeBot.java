@@ -28,12 +28,12 @@ public class JokeBot extends Thread {
 	private Random r = new Random();
 
 	public JokeBot() {
-		Socket client = null;
 		list.add("A common programming solution is to use threads. But then, two ‘llyou hav erpoblesm.");
 		list.add("I’ve got a really good UDP joke to tell you, but I don’t know if you’ll get it.");
 		list.add("There are 10 kinds of people in this world: Those who understand binary, those who don’t.");
 		list.add("In order to understand recursion you must first understand recursion.");
 		list.add("Why do Java programmers wear glasses? Because they don’t C#!");
+		Socket client = null;
 		try {
 			client = new Socket("localhost", PORT);
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));

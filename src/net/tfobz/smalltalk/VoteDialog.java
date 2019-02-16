@@ -6,6 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.net.SocketException;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -16,6 +22,10 @@ import dframe.DTextField;
 
 public class VoteDialog extends JDialog {
 
+	
+	private BufferedReader in = null;
+	public static final int PORT = 65535;
+	private PrintStream out;
 	private DButton button;
 	private DButton send;
 	private DTextField title;
@@ -31,6 +41,15 @@ public class VoteDialog extends JDialog {
 	}
 
 	private void initialize() {
+		Socket client = null;
+		try {
+			client = new Socket("localhost", PORT);
+			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			out = new PrintStream(client.getOutputStream());
+			out.println("#+/(!)!(?)()=?!?");
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
 		setLayout(null);
 		setUndecorated(true);
 		getContentPane().setBackground(new Color(65, 65, 65));
@@ -54,6 +73,8 @@ public class VoteDialog extends JDialog {
 		send.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println(getVotingString());
+				out.println(getVotingString());
 				VoteDialog.this.setVisible(false);
 			}
 		});
@@ -113,14 +134,7 @@ public class VoteDialog extends JDialog {
 	}
 
 	public String getVotingString() {
-		return "!§$%&/()=" + title.getText() + votes[0].getText() + votes[1].getText() + votes[2].getText()
-				+ votes[3].getText();
-	}
-
-	public static void main(String[] args) {
-		VoteDialog v = new VoteDialog();
-
-		v.setVisible(true);
-
+		return "!§$%&/()=" + title.getText()+ "///" + votes[0].getText()+"///" + votes[1].getText()+"///" + votes[2].getText()+"///"
+				+ votes[3].getText() +"///";
 	}
 }
