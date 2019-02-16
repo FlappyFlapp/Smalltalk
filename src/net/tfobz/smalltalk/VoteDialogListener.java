@@ -93,17 +93,17 @@ public class VoteDialogListener extends JDialog {
 								votes[i].addActionListener(new ActionListener() {
 									@Override
 									public void actionPerformed(ActionEvent arg0) {
-										if ( arg0.getSource().equals(votes[1])) {
+										if ( arg0.getSource().equals(votes[0])) {
+											numvote=0;
+											dispose();
+										} else if ( arg0.getSource().equals(votes[1])) {
 											numvote=1;
 											dispose();
-										} else if ( arg0.getSource().equals(votes[2])) {
+										}else if ( arg0.getSource().equals(votes[2])) {
 											numvote=2;
 											dispose();
 										}else if ( arg0.getSource().equals(votes[3])) {
 											numvote=3;
-											dispose();
-										}else if ( arg0.getSource().equals(votes[4])) {
-											numvote=4;
 											dispose();
 										}
 									}
