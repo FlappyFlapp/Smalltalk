@@ -50,6 +50,7 @@ public class VoteDialog extends JDialog {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+		
 		setLayout(null);
 		setUndecorated(true);
 		getContentPane().setBackground(new Color(65, 65, 65));
@@ -73,7 +74,6 @@ public class VoteDialog extends JDialog {
 		send.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(getVotingString());
 				out.println(getVotingString());
 				VoteDialog.this.setVisible(false);
 			}

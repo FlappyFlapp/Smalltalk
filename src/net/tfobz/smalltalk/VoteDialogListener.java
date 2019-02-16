@@ -30,6 +30,7 @@ public class VoteDialogListener extends JDialog {
 	private DButton[] votes = new DButton[4];
 	private DButton cancel;
 	private PrintStream out;
+	private int numvote;
 
 	public VoteDialogListener(JFrame owner) {	
 		super(owner);
@@ -80,17 +81,29 @@ public class VoteDialogListener extends JDialog {
 								int j= line.indexOf("///");
 								lh[i]=line.substring(0, j);
 								line=line.substring(j+3);
-								System.out.println(i+" "+lh[i]);
 							}
 							title.setText(lh[0]);
 							for (int i = 0; i < 4; i++) {
-								//System.out.println(line);
 								votes[i] = new DButton(lh[i+1]);
 								votes[i].setBounds(40, 150 + i * 70, 300, 40);
 								votes[i].setFont(new Font("Segoe UI Symbol", Font.PLAIN, 22));
 								votes[i].setBorder(null);
 								votes[i].setBackground(new Color(65, 65, 65));
 								votes[i].setForeground(new Color(140, 140, 140));
+								votes[i].addActionListener(new ActionListener() {
+									@Override
+									public void actionPerformed(ActionEvent arg0) {
+										if ( arg0.getSource().equals(votes[1])) {
+											numvote=1;
+										} else if ( arg0.getSource().equals(votes[2])) {
+											numvote=2;
+										}else if ( arg0.getSource().equals(votes[3])) {
+											numvote=3;
+										}else if ( arg0.getSource().equals(votes[4])) {
+											numvote=4;
+										}
+									}
+								});
 								add(votes[i]);
 							}
 							setVisible(true);
@@ -105,5 +118,10 @@ public class VoteDialogListener extends JDialog {
 			
 		}).start();
 		
+	}
+	
+	public String getVotingString() {
+		return "!§$%&/()=" + title.getText()+ "///" + votes[0].getText()+"///" + votes[1].getText()+"///" + votes[2].getText()+"///"
+				+ votes[3].getText() +"///"+"vote="+numvote;
 	}
 }
