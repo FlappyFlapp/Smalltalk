@@ -10,6 +10,8 @@ public class ChatServer
 {
 	public static final int PORT = 65535;
 	public static ArrayList<PrintStream> outputStreams = new ArrayList<PrintStream>();
+	public static ArrayList<Voting> votings = new ArrayList<Voting>();
+	
 	public static void main(String[] args) {
 		ServerSocket server = null;
 		try {

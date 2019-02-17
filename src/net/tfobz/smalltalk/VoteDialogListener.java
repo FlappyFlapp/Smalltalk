@@ -24,7 +24,6 @@ import dframe.DTextField;
 
 public class VoteDialogListener extends JDialog {
 
-	private BufferedReader in = null;
 	public static final int PORT = 65535;
 	private DTextField title;
 	private DButton[] votes = new DButton[4];
@@ -32,9 +31,9 @@ public class VoteDialogListener extends JDialog {
 	private PrintStream out;
 	private int numvote;
 
-	public VoteDialogListener(JFrame owner) {
+	public VoteDialogListener(JFrame owner, PrintStream out) {
 		super(owner);
-
+		this.out = out;
 		setLayout(null);
 		setUndecorated(true);
 		getContentPane().setBackground(new Color(65, 65, 65));
@@ -61,7 +60,9 @@ public class VoteDialogListener extends JDialog {
 	}
 
 	public String getVotingString() {
-		return "!§$%&/()=" + title.getText() + "///" + votes[0].getText() + "///" + votes[1].getText() + "///"
+		System.out.println("=)(/&%$§!" + title.getText() + "///" + votes[0].getText() + "///" + votes[1].getText()
+				+ "///" + votes[2].getText() + "///" + votes[3].getText() + "///" + "vote=" + numvote);
+		return "=)(/&%$§!" + title.getText() + "///" + votes[0].getText() + "///" + votes[1].getText() + "///"
 				+ votes[2].getText() + "///" + votes[3].getText() + "///" + "vote=" + numvote;
 	}
 
@@ -71,37 +72,43 @@ public class VoteDialogListener extends JDialog {
 		for (int i = 0; i < 5; i++) {
 			int j = line.indexOf("///");
 			lh[i] = line.substring(0, j);
-			System.out.println(lh[i]);
 			line = line.substring(j + 3);
 		}
-		
+
 		title.setText(lh[0]);
 		for (int i = 0; i < 4; i++) {
-			votes[i] = new DButton(lh[i + 1]);
-			votes[i].setBounds(40, 150 + i * 70, 300, 40);
-			votes[i].setFont(new Font("Segoe UI Symbol", Font.PLAIN, 22));
-			votes[i].setBorder(null);
-			votes[i].setBackground(new Color(65, 65, 65));
-			votes[i].setForeground(new Color(140, 140, 140));
-			votes[i].addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					if (arg0.getSource().equals(votes[0])) {
-						numvote = 0;
-						dispose();
-					} else if (arg0.getSource().equals(votes[1])) {
-						numvote = 1;
-						dispose();
-					} else if (arg0.getSource().equals(votes[2])) {
-						numvote = 2;
-						dispose();
-					} else if (arg0.getSource().equals(votes[3])) {
-						numvote = 3;
-						dispose();
+			if (!lh[i + 1].contains("poll option...")) {
+				votes[i] = new DButton(lh[i + 1]);
+				votes[i].setBounds(40, 150 + i * 70, 300, 40);
+				votes[i].setFont(new Font("Segoe UI Symbol", Font.PLAIN, 22));
+				votes[i].setBorder(null);
+				votes[i].setBackground(new Color(65, 65, 65));
+				votes[i].setForeground(new Color(140, 140, 140));
+				votes[i].addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						if (arg0.getSource().equals(votes[0])) {
+							numvote = 0;
+							out.println(getVotingString());
+							dispose();
+						} else if (arg0.getSource().equals(votes[1])) {
+							numvote = 1;
+							out.println(getVotingString());
+							dispose();
+						} else if (arg0.getSource().equals(votes[2])) {
+							numvote = 2;
+							out.println(getVotingString());
+							dispose();
+						} else if (arg0.getSource().equals(votes[3])) {
+							numvote = 3;
+							out.println(getVotingString());
+							dispose();
+						}
 					}
-				}
-			});
-			add(votes[i]);
+				});
+				add(votes[i]);
+			}
+
 		}
 
 	}

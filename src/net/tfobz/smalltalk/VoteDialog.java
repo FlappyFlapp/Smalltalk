@@ -102,6 +102,7 @@ public class VoteDialog extends JDialog {
 			votes[i].removeFocusListener(votes[i].getFocusListener());
 			votes[i].setForeground(new Color(140, 140, 140));
 			votes[i].addFocusListener(new FocusListener() {
+
 				@Override
 				public void focusLost(FocusEvent e) {
 					votes[j].setForeground(Color.WHITE);

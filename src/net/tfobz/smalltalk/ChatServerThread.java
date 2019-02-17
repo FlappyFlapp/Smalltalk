@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
-public class ChatServerThread extends Thread
-{
+public class ChatServerThread extends Thread {
 	private Socket client = null;
 	private BufferedReader in = null;
 	private PrintStream out = null;
@@ -33,10 +33,40 @@ public class ChatServerThread extends Thread
 				String line = in.readLine();
 				if (line == null)
 					break;
-				synchronized (ChatServer.outputStreams) {
-					for (PrintStream outs : ChatServer.outputStreams)
-						outs.println(name + ": " + line);
+				System.out.println(line);
+				if (line.contains("!§$%&/()=")) {
+					ChatServer.votings.add(new Voting(line));
+					synchronized (ChatServer.outputStreams) {
+						for (PrintStream outs : ChatServer.outputStreams)
+							outs.println(name + ": " + line);
+					}
+				} else if (line.contains("=)(/&%$§!")) {
+					synchronized (ChatServer.votings) {
+						for (int i = 0; i < ChatServer.votings.size(); i++) {
+							int index = ChatServer.votings.get(i).getLine().indexOf("!§$%&/()=") + 9;
+							// String dings = ;
+
+							if (line.contains(ChatServer.votings.get(i).getLine().substring(index))) {
+								int vote = Integer.parseInt(line.substring(line.indexOf("vote=") + 5));
+								System.out.println(vote);
+								ChatServer.votings.get(i).setVote(vote);
+								String voting = ChatServer.votings.get(i).getVotingString();
+								synchronized (ChatServer.outputStreams) {
+									for (PrintStream outs : ChatServer.outputStreams)
+										outs.println(name + voting);
+								}
+								break;
+							}
+						}
+					}
+
+				} else {
+					synchronized (ChatServer.outputStreams) {
+						for (PrintStream outs : ChatServer.outputStreams)
+							outs.println(name + ": " + line);
+					}
 				}
+
 			}
 			synchronized (ChatServer.outputStreams) {
 				ChatServer.outputStreams.remove(out);
