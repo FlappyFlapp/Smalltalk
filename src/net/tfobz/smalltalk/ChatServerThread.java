@@ -35,7 +35,9 @@ public class ChatServerThread extends Thread {
 					break;
 				System.out.println(line);
 				if (line.contains("!§$%&/()=")) {
-					ChatServer.votings.add(new Voting(line));
+					synchronized (ChatServer.votings) {
+						ChatServer.votings.add(new Voting(line));
+					}
 					synchronized (ChatServer.outputStreams) {
 						for (PrintStream outs : ChatServer.outputStreams)
 							outs.println(name + ": " + line);
@@ -44,8 +46,8 @@ public class ChatServerThread extends Thread {
 					synchronized (ChatServer.votings) {
 						for (int i = 0; i < ChatServer.votings.size(); i++) {
 							int index = ChatServer.votings.get(i).getLine().indexOf("!§$%&/()=") + 9;
-							// String dings = ;
-
+							System.out.println("index: " + index);
+							System.out.println(" line: " + ChatServer.votings.get(i).getLine());
 							if (line.contains(ChatServer.votings.get(i).getLine().substring(index))) {
 								int vote = Integer.parseInt(line.substring(line.indexOf("vote=") + 5));
 								System.out.println(vote);
@@ -53,7 +55,7 @@ public class ChatServerThread extends Thread {
 								String voting = ChatServer.votings.get(i).getVotingString();
 								synchronized (ChatServer.outputStreams) {
 									for (PrintStream outs : ChatServer.outputStreams)
-										outs.println(name + voting);
+										outs.println(name + ": " + voting);
 								}
 								break;
 							}

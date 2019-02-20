@@ -13,6 +13,8 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import com.sun.javafx.scene.control.skin.ColorPalette;
+
 public class ChatClientThread extends Thread {
 	private BufferedReader in = null;
 	private JTextPane pane;
@@ -65,16 +67,50 @@ public class ChatClientThread extends Thread {
 						}
 
 					} else if (line.contains("!§$%&/()=")) {
+						StyleConstants.setForeground(style, dframe.ColorPalette.BLAU);
+						doc.insertString(doc.getLength(), "     " + line.substring(0, line.indexOf(":")), style);
+						StyleConstants.setForeground(style, Color.white);
+						doc.insertString(doc.getLength(), " started a new voting: ", style);
+						
+						String lh[] = new String[5];
+
+						String line1 = line.substring(line.indexOf("!§$%&/()=") + 9);
+						for (int i = 0; i < 5; i++) {
+							int j = line1.indexOf("///");
+							lh[i] = line1.substring(0, j);
+							line1 = line1.substring(j + 3);
+						}
 						StyleConstants.setForeground(style, dframe.ColorPalette.VIOLETT);
-						doc.insertString(doc.getLength(), line + "\n", style);
+						doc.insertString(doc.getLength(), lh[0] + "\n", style);
+						StyleConstants.setForeground(style, Color.WHITE);
+						for (int i = 1; i < 5; i++) {
+							doc.insertString(doc.getLength(), "        " + lh[i] + "\n", style);
+						}
 						VoteDialogListener vdl = new VoteDialogListener(gui, gui.getOut());
 						vdl.setLocation((int) gui.getLocation().getX() + 10, (int) gui.getLocation().getY() + 365);
 						vdl.setModal(true);
 						vdl.setVotingTable(line);
 						vdl.setVisible(true);
 					} else if (line.contains("=)(/&%$§!")) {
+						StyleConstants.setForeground(style, dframe.ColorPalette.BLAU);
+						doc.insertString(doc.getLength(), "     " + line.substring(0, line.indexOf(":")), style);
+						StyleConstants.setForeground(style, Color.white);
+						doc.insertString(doc.getLength(), " has voted: ", style);
+						String lh[] = new String[9];
+
+						String line1 = line.substring(line.indexOf("=)(/&%$§!") + 9);
+						for (int i = 0; i < 8; i++) {
+							int j = line1.indexOf("///");
+							lh[i] = line1.substring(0, j);
+							line1 = line1.substring(j + 3);
+						}
+						lh[8] = line1;
 						StyleConstants.setForeground(style, dframe.ColorPalette.VIOLETT);
-						doc.insertString(doc.getLength(), line + "\n", style);
+						doc.insertString(doc.getLength(), lh[0] + "\n", style);
+						StyleConstants.setForeground(style, Color.WHITE);
+						for (int i = 1; i <= 7; i = i + 2) {
+							doc.insertString(doc.getLength(), "        " + lh[i] + ": " + lh[i + 1] + "\n", style);
+						}
 					} else if (line.contains("signed out")) {
 						StyleConstants.setForeground(style, dframe.ColorPalette.ROT);
 						doc.insertString(doc.getLength(), line + "\n", style);

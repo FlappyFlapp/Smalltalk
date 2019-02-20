@@ -16,11 +16,11 @@ public class Voting {
 	public String getVotingString() {
 		String lh[] = new String[5];
 		System.out.println("     " + line);
-		this.line = line.substring(9);
+		String line1 = line.substring(9);
 		for (int i = 0; i < 5; i++) {
-			int j = line.indexOf("///");
-			lh[i] = line.substring(0, j);
-			line = line.substring(j + 3);
+			int j = line1.indexOf("///");
+			lh[i] = line1.substring(0, j);
+			line1 = line1.substring(j + 3);
 		}
 
 		return "=)(/&%$§!" + lh[0] + "///" + lh[1] + "///" + votes[0] + "///" + lh[2] + "///" + votes[1] + "///" + lh[3]
@@ -39,8 +39,5 @@ public class Voting {
 		return votes;
 	}
 
-	public void setVotes(int[] votes) {
-		this.votes = votes;
-	}
 
 }
