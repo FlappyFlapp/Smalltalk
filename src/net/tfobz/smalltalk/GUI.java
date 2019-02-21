@@ -36,7 +36,7 @@ import java.awt.event.ActionListener;
 public class GUI extends DFrame {
 	private DTextField text;
 	private DButton button;
-	private JTextPane area;
+	private MyTextPane area;
 	private BufferedReader in;
 	private PrintStream out;
 	private Socket client = null;
@@ -49,6 +49,7 @@ public class GUI extends DFrame {
 	private DLabel start_lbl;
 	private JLabel bild;
 	private DButton vote_btn;
+	private JPanel write_bar;
 
 	public GUI() {
 		setSize(1600, 900);
@@ -61,17 +62,22 @@ public class GUI extends DFrame {
 		all_pnl.setBackground(new Color(60, 60, 60));
 		all_pnl.setLayout(null);
 		add(all_pnl);
-
+		
+		write_bar = new JPanel();
+		write_bar.setBounds(0, 810, getWidth(), 90);
+		write_bar.setBackground(new Color(65, 65, 65));
+		write_bar.setLayout(null);
+		all_pnl.add(write_bar);
+		
 		text = new DTextField();
-		text.setBounds(50, 820, 1500, 40);
-		text.setBackground(new Color(60, 60, 60));
-		all_pnl.add(text);
+		text.setBounds(50, 10, 1500, 40);
+		text.setBackground(new Color(65, 65, 65));
+		write_bar.add(text);
 
 		button = new DButton();
-		button.setBounds(1555, 825, 30, 30);
-		button.setBackground(new Color(60, 60, 60));
+		button.setBounds(1555, 15, 30, 30);
 		button.setContentAreaFilled(false);
-
+		
 		try {
 			Image img = ImageIO.read(getClass().getResource("senden.png"));
 			Image newimg = img.getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
@@ -79,10 +85,10 @@ public class GUI extends DFrame {
 		} catch (Exception ex) {
 		}
 
-		all_pnl.add(button);
+		write_bar.add(button);
 
 		vote_btn = new DButton();
-		vote_btn.setBounds(10, 825, 30, 30);
+		vote_btn.setBounds(10, 15, 30, 30);
 		vote_btn.setBackground(new Color(60, 60, 60));
 		vote_btn.setContentAreaFilled(false);
 
@@ -93,7 +99,7 @@ public class GUI extends DFrame {
 		} catch (Exception ex) {
 		}
 
-		all_pnl.add(vote_btn);
+		write_bar.add(vote_btn);
 
 		vote_btn.addActionListener(new ActionListener() {
 
@@ -106,7 +112,7 @@ public class GUI extends DFrame {
 			}
 		});
 
-		area = new JTextPane();
+		area = new MyTextPane();
 		area.setEditable(false);
 		area.setBackground(new Color(60, 60, 60));
 		area.setForeground(Color.WHITE);
@@ -229,7 +235,7 @@ public class GUI extends DFrame {
 		return area;
 	}
 
-	public void setArea(JTextPane area) {
+	public void setArea(MyTextPane area) {
 		this.area = area;
 	}
 
@@ -243,14 +249,6 @@ public class GUI extends DFrame {
 
 	public PrintStream getOut() {
 		return out;
-	}
-
-	public void paint(Graphics g) {
-		super.paint(g);
-		Graphics2D g2 = (Graphics2D) g;
-		Line2D lin = new Line2D.Float(10, 840, 1590, 840);
-		g2.setColor(new Color(90, 90, 90));
-		g2.draw(lin);
 	}
 
 	public static void main(String[] args) {

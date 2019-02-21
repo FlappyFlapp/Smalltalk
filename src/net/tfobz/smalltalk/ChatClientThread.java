@@ -17,11 +17,11 @@ import com.sun.javafx.scene.control.skin.ColorPalette;
 
 public class ChatClientThread extends Thread {
 	private BufferedReader in = null;
-	private JTextPane pane;
+	private MyTextPane pane;
 	private Style style;
 	private GUI gui;
 
-	public ChatClientThread(BufferedReader in, GUI gui, JTextPane pane) {
+	public ChatClientThread(BufferedReader in, GUI gui, MyTextPane pane) {
 		this.in = in;
 		this.pane = pane;
 		this.gui = gui;
@@ -43,13 +43,14 @@ public class ChatClientThread extends Thread {
 						}
 					}
 
-					int textlaenge = 200;
+					int textlaenge = 150;
 					if (!line.contains("signed in") && !line.contains("signed out") && !line.startsWith("-")
 							&& !line.contains("!§$%&/()=") && !line.contains("=)(/&%$§!")) {
 						StyleConstants.setForeground(style, dframe.ColorPalette.BLAU);
 						doc.insertString(doc.getLength(), "  " + line.substring(0, index + 1) + "\n", style);
 						line = line.substring(index + 2);
 						if (line.length() > textlaenge) {
+							int p = 1;
 							for (int i = 0; i < line.length(); i = i + textlaenge) {
 								if (i + textlaenge < line.length()) {
 									StyleConstants.setForeground(style, Color.WHITE);
@@ -59,11 +60,13 @@ public class ChatClientThread extends Thread {
 									StyleConstants.setForeground(style, Color.WHITE);
 									doc.insertString(doc.getLength(), "      " + line.substring(i) + "\n", style);
 								}
-
+								p++;
 							}
+							pane.setLine(p);
 						} else {
 							StyleConstants.setForeground(style, Color.WHITE);
 							doc.insertString(doc.getLength(), "      " + line + "\n", style);
+							pane.setLine(2);
 						}
 
 					} else if (line.contains("!§$%&/()=")) {
@@ -71,7 +74,7 @@ public class ChatClientThread extends Thread {
 						doc.insertString(doc.getLength(), "     " + line.substring(0, line.indexOf(":")), style);
 						StyleConstants.setForeground(style, Color.white);
 						doc.insertString(doc.getLength(), " started a new voting: ", style);
-						
+
 						String lh[] = new String[5];
 
 						String line1 = line.substring(line.indexOf("!§$%&/()=") + 9);
@@ -86,6 +89,7 @@ public class ChatClientThread extends Thread {
 						for (int i = 1; i < 5; i++) {
 							doc.insertString(doc.getLength(), "        " + lh[i] + "\n", style);
 						}
+						pane.setLine(5);
 						VoteDialogListener vdl = new VoteDialogListener(gui, gui.getOut());
 						vdl.setLocation((int) gui.getLocation().getX() + 10, (int) gui.getLocation().getY() + 365);
 						vdl.setModal(true);
@@ -109,14 +113,17 @@ public class ChatClientThread extends Thread {
 						doc.insertString(doc.getLength(), lh[0] + "\n", style);
 						StyleConstants.setForeground(style, Color.WHITE);
 						for (int i = 1; i <= 7; i = i + 2) {
-							doc.insertString(doc.getLength(), "        " + lh[i] + ": " + lh[i + 1] + "\n", style);
+							doc.insertString(doc.getLength(), "        " + lh[i + 1] + "    " + lh[i] + "\n", style);
 						}
+						pane.setLine(5);
 					} else if (line.contains("signed out")) {
 						StyleConstants.setForeground(style, dframe.ColorPalette.ROT);
 						doc.insertString(doc.getLength(), line + "\n", style);
+						pane.setLine(2);
 					} else if (line.contains("signed in")) {
 						StyleConstants.setForeground(style, dframe.ColorPalette.GRUEN);
 						doc.insertString(doc.getLength(), line + "\n", style);
+						pane.setLine(2);
 					}
 					pane.setSelectionEnd(pane.getStyledDocument().getLength());
 				} catch (BadLocationException e) {
