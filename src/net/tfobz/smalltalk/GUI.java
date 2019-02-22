@@ -231,7 +231,7 @@ public class GUI extends DFrame {
 		});
 	}
 
-	public JTextPane getArea() {
+	public MyTextPane getArea() {
 		return area;
 	}
 
