@@ -91,7 +91,8 @@ public class ChatClientThread extends Thread {
 						}
 						pane.setLine(5);
 						VoteDialogListener vdl = new VoteDialogListener(gui, gui.getOut());
-						vdl.setLocation((int) gui.getLocation().getX() + 10, (int) gui.getLocation().getY() + 365);
+						vdl.setLocation((int) gui.getLocation().getX() + 250 + 10,
+								(int) gui.getLocation().getY() + 365);
 						vdl.setModal(true);
 						vdl.setVotingTable(line);
 						vdl.setVisible(true);

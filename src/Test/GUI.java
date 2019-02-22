@@ -32,6 +32,10 @@ import dframe.DTextField;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class GUI extends DFrame {
 	private DTextField text;
@@ -50,6 +54,8 @@ public class GUI extends DFrame {
 	private JLabel bild;
 	private DButton vote_btn;
 	private JPanel write_bar;
+	private JPanel chats_bar;
+	private JScrollPane chat_jsc;
 
 	public GUI() {
 		setSize(1600, 900);
@@ -63,19 +69,86 @@ public class GUI extends DFrame {
 		all_pnl.setLayout(null);
 		add(all_pnl);
 
+		chats_bar = new JPanel();
+		chats_bar.setBackground(new Color(55, 55, 55));
+		chats_bar.setLayout(new GridLayout(50, 1));
+
+		UIManager.getLookAndFeelDefaults().put("ScrollBar.thumb", Color.GRAY);
+		chat_jsc = new JScrollPane(chats_bar, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		chat_jsc.setComponentZOrder(chat_jsc.getVerticalScrollBar(), 0);
+		chat_jsc.setComponentZOrder(chat_jsc.getViewport(), 1);
+		chat_jsc.getVerticalScrollBar().setOpaque(false);
+		chat_jsc.getVerticalScrollBar().setUnitIncrement(16);
+		chat_jsc.setLayout(new ScrollPaneLayout() {
+			@Override
+			public void layoutContainer(Container parent) {
+				JScrollPane scrollPane = (JScrollPane) parent;
+
+				Rectangle availR = scrollPane.getBounds();
+				availR.x = availR.y = 0;
+
+				Insets parentInsets = parent.getInsets();
+				availR.x = parentInsets.left;
+				availR.y = parentInsets.top;
+				availR.width -= parentInsets.left + parentInsets.right;
+				availR.height -= parentInsets.top + parentInsets.bottom;
+
+				Rectangle vsbR = new Rectangle();
+				vsbR.width = 12;
+				vsbR.height = availR.height;
+				vsbR.x = availR.x + availR.width - vsbR.width;
+				vsbR.y = availR.y;
+
+				if (viewport != null) {
+					viewport.setBounds(availR);
+				}
+				if (vsb != null) {
+					vsb.setVisible(true);
+					vsb.setBounds(vsbR);
+				}
+			}
+		});
+		chat_jsc.getVerticalScrollBar().setUI(new MyScrollBarUI());
+		chat_jsc.setBounds(0, 0, 250, getHeight());
+		chat_jsc.setBorder(null);
+		all_pnl.add(chat_jsc);
+
+		for (int i = 0; i < 40; i++) {
+			DButton j = new DButton("User " + i);
+			j.setPreferredSize(new Dimension(chat_jsc.getWidth(), 45));
+			j.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 20));
+			//
+			j.setContentAreaFilled(false);
+			j.addMouseListener(new MouseAdapter() {
+				public void mouseEntered(MouseEvent e) {
+					chat_jsc.repaint();
+					chat_jsc.getVerticalScrollBar().repaint();
+				}
+
+				public void mouseExited(MouseEvent e) {
+					chat_jsc.repaint();
+					chat_jsc.getVerticalScrollBar().repaint();
+				}
+			});
+			chats_bar.add(j);
+		}
+
 		write_bar = new JPanel();
-		write_bar.setBounds(0, 810, getWidth(), 90);
-		write_bar.setBackground(new Color(65, 65, 65));
+		write_bar.setBounds(chat_jsc.getWidth(), 810,
+
+				getWidth() - chat_jsc.getWidth(), 90);
+		write_bar.setBackground(new Color(70, 70, 70));
 		write_bar.setLayout(null);
 		all_pnl.add(write_bar);
 
 		text = new DTextField();
-		text.setBounds(50, 10, 1500, 40);
-		text.setBackground(new Color(65, 65, 65));
+		text.setBounds(50, 10, 1250, 40);
+		text.setBackground(new Color(70, 70, 70));
 		write_bar.add(text);
 
 		button = new DButton();
-		button.setBounds(1555, 15, 30, 30);
+		button.setBounds(1305, 15, 30, 30);
 		button.setContentAreaFilled(false);
 
 		try {
@@ -106,7 +179,8 @@ public class GUI extends DFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				VoteDialog v = new VoteDialog(GUI.this, GUI.this.out);
-				v.setLocation((int) GUI.this.getLocation().getX() + 10, (int) GUI.this.getLocation().getY() + 365);
+				v.setLocation((int) GUI.this.getLocation().getX() + 250 + 10,
+						(int) GUI.this.getLocation().getY() + 365);
 				v.setModal(true);
 				v.setVisible(true);
 			}
@@ -118,7 +192,6 @@ public class GUI extends DFrame {
 		area.setForeground(Color.WHITE);
 		area.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 15));
 
-		UIManager.getLookAndFeelDefaults().put("ScrollBar.thumb", Color.GRAY);
 		jsc = new JScrollPane(area, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		jsc.setComponentZOrder(jsc.getVerticalScrollBar(), 0);
@@ -155,7 +228,7 @@ public class GUI extends DFrame {
 			}
 		});
 		jsc.getVerticalScrollBar().setUI(new MyScrollBarUI());
-		jsc.setBounds(0, 0, getWidth(), 810);
+		jsc.setBounds(chat_jsc.getWidth(), 0, getWidth() - chat_jsc.getWidth(), 810);
 		jsc.setBorder(null);
 		all_pnl.add(jsc);
 

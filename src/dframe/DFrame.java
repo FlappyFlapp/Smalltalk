@@ -76,7 +76,7 @@ public class DFrame extends JFrame {
 
 	private void addMenuBar() {
 		menuBar = new JMenuBar();
-		menuBar.setBackground(new Color(52, 52, 52));
+		menuBar.setBackground(new Color(47, 47, 47));
 		menuBar.setBorderPainted(false);
 		setJMenuBar(menuBar);
 		addNavigationTools();
