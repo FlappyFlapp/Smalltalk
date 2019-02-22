@@ -62,13 +62,13 @@ public class GUI extends DFrame {
 		all_pnl.setBackground(new Color(60, 60, 60));
 		all_pnl.setLayout(null);
 		add(all_pnl);
-		
+
 		write_bar = new JPanel();
 		write_bar.setBounds(0, 810, getWidth(), 90);
 		write_bar.setBackground(new Color(65, 65, 65));
 		write_bar.setLayout(null);
 		all_pnl.add(write_bar);
-		
+
 		text = new DTextField();
 		text.setBounds(50, 10, 1500, 40);
 		text.setBackground(new Color(65, 65, 65));
@@ -77,7 +77,7 @@ public class GUI extends DFrame {
 		button = new DButton();
 		button.setBounds(1555, 15, 30, 30);
 		button.setContentAreaFilled(false);
-		
+
 		try {
 			Image img = ImageIO.read(getClass().getResource("senden.png"));
 			Image newimg = img.getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
@@ -164,9 +164,11 @@ public class GUI extends DFrame {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String t = text.getText();
-				if (t != null && t.length() > 0) {
+				if (out != null && t != null && t.length() > 0) {
 					out.println(t);
 					text.setText(null);
+				} else {
+					// OUT ISH NT ODO T ISH NET!!!
 				}
 			}
 		});
@@ -255,7 +257,6 @@ public class GUI extends DFrame {
 		GUI gui = new GUI();
 		gui.setVisible(true);
 	}
-
 }
 
 class MyScrollBarUI extends BasicScrollBarUI {

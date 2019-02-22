@@ -63,8 +63,12 @@ public class VoteDialog extends JDialog {
 		send.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				out.println(getVotingString());
-				VoteDialog.this.setVisible(false);
+				if (out != null) {
+					out.println(getVotingString());
+					VoteDialog.this.setVisible(false);
+				} else {
+					/// NET VERBUNDN
+				}
 			}
 		});
 		add(send);
