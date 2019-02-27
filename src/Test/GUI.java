@@ -114,26 +114,6 @@ public class GUI extends DFrame {
 		chat_jsc.setBorder(null);
 		all_pnl.add(chat_jsc);
 
-		for (int i = 0; i < 40; i++) {
-			DButton j = new DButton("User " + i);
-			j.setPreferredSize(new Dimension(chat_jsc.getWidth(), 45));
-			j.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 20));
-			//
-			j.setContentAreaFilled(false);
-			j.addMouseListener(new MouseAdapter() {
-				public void mouseEntered(MouseEvent e) {
-					chat_jsc.repaint();
-					chat_jsc.getVerticalScrollBar().repaint();
-				}
-
-				public void mouseExited(MouseEvent e) {
-					chat_jsc.repaint();
-					chat_jsc.getVerticalScrollBar().repaint();
-				}
-			});
-			chats_bar.add(j);
-		}
-
 		write_bar = new JPanel();
 		write_bar.setBounds(chat_jsc.getWidth(), 810,
 
@@ -304,6 +284,14 @@ public class GUI extends DFrame {
 				}
 			}
 		});
+	}
+
+	public JPanel getChats_bar() {
+		return chats_bar;
+	}
+
+	public JScrollPane getChat_jsc() {
+		return chat_jsc;
 	}
 
 	public MyTextPane getArea() {

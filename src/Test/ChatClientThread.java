@@ -1,9 +1,14 @@
 package Test;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 import javax.swing.JScrollBar;
 import javax.swing.JTextPane;
@@ -15,11 +20,14 @@ import javax.swing.text.StyledDocument;
 
 import com.sun.javafx.scene.control.skin.ColorPalette;
 
+import dframe.DButton;
+
 public class ChatClientThread extends Thread {
 	private BufferedReader in = null;
 	private MyTextPane pane;
 	private Style style;
 	private GUI gui;
+	private ArrayList<DButton> buttons = new ArrayList<DButton>();
 
 	public ChatClientThread(BufferedReader in, GUI gui, MyTextPane pane) {
 		this.in = in;
@@ -121,11 +129,58 @@ public class ChatClientThread extends Thread {
 						StyleConstants.setForeground(style, dframe.ColorPalette.ROT);
 						doc.insertString(doc.getLength(), line + "\n", style);
 						pane.setLine(2);
+						
+						for (DButton b : buttons) {
+							if (b.getText().contains(line.substring(0, line.indexOf(" signed out")))) {
+								gui.getChats_bar().remove(b);
+								gui.getChats_bar().validate();
+								gui.getChats_bar().repaint();
+								buttons.remove(b);
+								break;
+							}
+						}
+						
 					} else if (line.contains("signed in")) {
 						StyleConstants.setForeground(style, dframe.ColorPalette.GRUEN);
 						doc.insertString(doc.getLength(), line + "\n", style);
 						pane.setLine(2);
+						DButton j = new DButton(line.substring(0, line.indexOf("signed in")));
+						j.setPreferredSize(new Dimension(gui.getChat_jsc().getWidth(), 45));
+						j.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 20));
+						j.setContentAreaFilled(false);
+						j.addMouseListener(new MouseAdapter() {
+							public void mouseReleased(MouseEvent e) {
+								gui.getChat_jsc().repaint();
+								gui.getChat_jsc().getVerticalScrollBar().repaint();
+							}
+
+							public void mousePressed(MouseEvent e) {
+								gui.getChat_jsc().repaint();
+								gui.getChat_jsc().getVerticalScrollBar().repaint();
+							}
+
+							public void mouseClicked(MouseEvent e) {
+								gui.getChat_jsc().repaint();
+								gui.getChat_jsc().getVerticalScrollBar().repaint();
+							}
+
+							public void mouseEntered(MouseEvent e) {
+								gui.getChat_jsc().repaint();
+								gui.getChat_jsc().getVerticalScrollBar().repaint();
+							}
+
+							public void mouseExited(MouseEvent e) {
+								gui.getChat_jsc().repaint();
+								gui.getChat_jsc().getVerticalScrollBar().repaint();
+							}
+						});
+						gui.getChats_bar().add(j);
+						buttons.add(j);
+						gui.getChats_bar().validate();
+						gui.getChats_bar().repaint();
+						j.repaint();
 					}
+
 					pane.setSelectionEnd(pane.getStyledDocument().getLength());
 				} catch (BadLocationException e) {
 				}
