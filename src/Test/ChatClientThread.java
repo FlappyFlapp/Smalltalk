@@ -28,6 +28,7 @@ public class ChatClientThread extends Thread {
 	private Style style;
 	private GUI gui;
 	private ArrayList<DButton> buttons = new ArrayList<DButton>();
+	private String name;
 
 	public ChatClientThread(BufferedReader in, GUI gui, MyTextPane pane) {
 		this.in = in;
@@ -144,7 +145,8 @@ public class ChatClientThread extends Thread {
 						StyleConstants.setForeground(style, dframe.ColorPalette.GRUEN);
 						doc.insertString(doc.getLength(), line + "\n", style);
 						pane.setLine(2);
-						DButton j = new DButton(line.substring(0, line.indexOf("signed in")));
+						name = line.substring(0, line.indexOf(" signed in"));
+						DButton j = new DButton(name);
 						j.setPreferredSize(new Dimension(gui.getChat_jsc().getWidth(), 45));
 						j.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 20));
 						j.setContentAreaFilled(false);

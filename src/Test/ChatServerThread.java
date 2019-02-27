@@ -25,6 +25,9 @@ public class ChatServerThread extends Thread {
 			}
 			name = in.readLine();
 			System.out.println(name + " signed in");
+			synchronized (ChatServer.names) {
+				ChatServer.names.add(name);
+			}
 			synchronized (ChatServer.outputStreams) {
 				for (PrintStream outs : ChatServer.outputStreams)
 					outs.println(name + " signed in");
@@ -72,12 +75,18 @@ public class ChatServerThread extends Thread {
 			}
 			synchronized (ChatServer.outputStreams) {
 				ChatServer.outputStreams.remove(out);
+				synchronized (ChatServer.names) {
+					ChatServer.names.remove(name);
+				}
 				System.out.println(name + " signed out");
 				for (PrintStream outs : ChatServer.outputStreams)
 					outs.println(name + " signed out");
 			}
 		} catch (IOException e) {
-			if (out != null) {
+			if (out != null && name != null) {
+				synchronized (ChatServer.names) {
+					ChatServer.names.remove(name);
+				}
 				synchronized (ChatServer.outputStreams) {
 					ChatServer.outputStreams.remove(out);
 					System.out.println(name + " signed out");
