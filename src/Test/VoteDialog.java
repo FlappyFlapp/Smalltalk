@@ -63,12 +63,16 @@ public class VoteDialog extends JDialog {
 		send.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (out != null) {
-					out.println(getVotingString());
-					VoteDialog.this.setVisible(false);
-				} else {
-					/// NET VERBUNDN
-				}
+				if (!title.getText().contains("Poll title") && (!votes[0].getText().contains("poll option...")
+						|| !votes[1].getText().contains("poll option...")
+						|| !votes[2].getText().contains("poll option...")
+						|| !votes[3].getText().contains("poll option...")))
+					if (out != null) {
+						out.println(getVotingString());
+						VoteDialog.this.setVisible(false);
+					} else {
+						/// NET VERBUNDN
+					}
 			}
 		});
 		add(send);
