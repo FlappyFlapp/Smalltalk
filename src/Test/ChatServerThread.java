@@ -32,11 +32,23 @@ public class ChatServerThread extends Thread {
 				for (PrintStream outs : ChatServer.outputStreams)
 					outs.println(name + " signed in");
 			}
+			
+			String online = "";
+			synchronized (ChatServer.names) {
+				for (String s : ChatServer.names) {
+					if (s != name)
+						online+= s + "///";
+				}
+			}
+			if (!online.equals("")) {
+				online = "!§!§%$%$" + online;
+				out.println(online);
+			}
+			
 			while (true) {
 				String line = in.readLine();
 				if (line == null)
 					break;
-				System.out.println(line);
 				if (line.contains("!§$%&/()=")) {
 					synchronized (ChatServer.votings) {
 						ChatServer.votings.add(new Voting(line));
@@ -46,14 +58,12 @@ public class ChatServerThread extends Thread {
 							outs.println(name + ": " + line);
 					}
 				} else if (line.contains("=)(/&%$§!")) {
+					System.out.println("GUGUGU");
 					synchronized (ChatServer.votings) {
 						for (int i = 0; i < ChatServer.votings.size(); i++) {
 							int index = ChatServer.votings.get(i).getLine().indexOf("!§$%&/()=") + 9;
-							System.out.println("index: " + index);
-							System.out.println(" line: " + ChatServer.votings.get(i).getLine());
 							if (line.contains(ChatServer.votings.get(i).getLine().substring(index))) {
 								int vote = Integer.parseInt(line.substring(line.indexOf("vote=") + 5));
-								System.out.println(vote);
 								ChatServer.votings.get(i).setVote(vote);
 								String voting = ChatServer.votings.get(i).getVotingString();
 								synchronized (ChatServer.outputStreams) {

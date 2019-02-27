@@ -1,6 +1,5 @@
 package Test;
 
-import java.awt.geom.Line2D;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingConstants;
@@ -32,10 +30,6 @@ import dframe.DTextField;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class GUI extends DFrame {
 	private DTextField text;
@@ -221,7 +215,7 @@ public class GUI extends DFrame {
 					out.println(t);
 					text.setText(null);
 				} else {
-					// OUT ISH NT ODO T ISH NET!!!
+					// OUT, ALSO SERVER ISH NT ODO T ISH NET!!!
 				}
 			}
 		});

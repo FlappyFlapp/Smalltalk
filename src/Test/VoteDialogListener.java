@@ -17,6 +17,7 @@ import java.util.Random;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.SwingConstants;
 
 import dframe.ColorPalette;
 import dframe.DButton;
@@ -53,17 +54,18 @@ public class VoteDialogListener extends JDialog {
 		title.setBounds(20, 60, 360, 40);
 		title.setBackground(new Color(65, 65, 65));
 		title.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 25));
-		title.setForeground(new Color(140, 140, 140));
+		title.setForeground(dframe.ColorPalette.BLAU);
 		title.setEditable(false);
+		title.setHorizontalAlignment(SwingConstants.CENTER);
 		add(title);
 		add(cancel);
 	}
 
 	public String getVotingString() {
-		System.out.println("=)(/&%$§!" + title.getText() + "///" + votes[0].getText() + "///" + votes[1].getText()
-				+ "///" + votes[2].getText() + "///" + votes[3].getText() + "///" + "vote=" + numvote);
-		return "=)(/&%$§!" + title.getText() + "///" + votes[0].getText() + "///" + votes[1].getText() + "///"
-				+ votes[2].getText() + "///" + votes[3].getText() + "///" + "vote=" + numvote;
+		 return "=)(/&%$§!" + title.getText() + "///" + votes[0].getText() + "///" +
+		 votes[1].getText() + "///"
+		 + votes[2].getText() + "///" + votes[3].getText() + "///" + "vote=" +
+		 numvote;
 	}
 
 	public void setVotingTable(String line) {
@@ -76,14 +78,15 @@ public class VoteDialogListener extends JDialog {
 		}
 
 		title.setText(lh[0]);
+		int counter = 0;
 		for (int i = 0; i < 4; i++) {
 			if (!lh[i + 1].contains("poll option...")) {
 				votes[i] = new DButton(lh[i + 1]);
-				votes[i].setBounds(40, 150 + i * 70, 300, 40);
+				votes[i].setBounds(40, 150 + counter * 70, 300, 40);
 				votes[i].setFont(new Font("Segoe UI Symbol", Font.PLAIN, 22));
 				votes[i].setBorder(null);
 				votes[i].setBackground(new Color(65, 65, 65));
-				votes[i].setForeground(new Color(140, 140, 140));
+				votes[i].setForeground(Color.WHITE);
 				votes[i].addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
@@ -107,6 +110,9 @@ public class VoteDialogListener extends JDialog {
 					}
 				});
 				add(votes[i]);
+				counter++;
+			} else {
+				votes[i] = new DButton(lh[i + 1]);
 			}
 
 		}

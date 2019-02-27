@@ -60,8 +60,6 @@ public class VoteDialogListener extends JDialog {
 	}
 
 	public String getVotingString() {
-		System.out.println("=)(/&%$§!" + title.getText() + "///" + votes[0].getText() + "///" + votes[1].getText()
-				+ "///" + votes[2].getText() + "///" + votes[3].getText() + "///" + "vote=" + numvote);
 		return "=)(/&%$§!" + title.getText() + "///" + votes[0].getText() + "///" + votes[1].getText() + "///"
 				+ votes[2].getText() + "///" + votes[3].getText() + "///" + "vote=" + numvote;
 	}
